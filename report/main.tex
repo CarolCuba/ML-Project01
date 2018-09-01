@@ -1,0 +1,46 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage[portuges,brazil,english]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{float}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Unsupervised learning techniques for text document clustering}
+
+\author{\IEEEauthorblockN{Jose Luis Flores Campana}
+\IEEEauthorblockA{
+209820 \\
+121451@unsaac.edu.pe}
+\and
+\IEEEauthorblockN{Elvis Rusnel Capia Quispe}
+\IEEEauthorblockA{
+209813 \\
+e209813@g.unicamp.br}}
+
+\maketitle
+
+\section{Methodology}
+
+\subsection{Data Preparation}	
+    A requirement for any computerized regression technique is that all data needs to be placed in discretized values and, in our case, three columns were presented as classes: cut, color and clarity. Fortunately, the semantic information of the classes was already given in the dataset description. As an example, the feature 'cut' represents the quality of the cut, as said in the previous section, and it's values are classes, varying among 'fair', 'good', 'very good', 'premium', and 'ideal' in its respective order of quality. That information of the quality order was provided by the description of the dataset.
+    
+    Thanks to that knowledge, it was decided to use a dummy coding for discretizing the values. That means that we keep the number of features by giving each class a different value. These values respect the semantic increase of quality of the class, i.e. 'fair' = 1, 'good' = 2, 'very good' = 3.
+    
+    Also, five features are used to represent two pieces of information: x, y, z, width and table. The size of the diamond is represented by x, y, and z while the width and table represent the correlation among of these dimensions in percentage. Therefore, we combined x,y,z into a new feature called volume with the correlation among them still being expressed on the width and table features.
+    
+    The last pre-processing step in preparation was the normalization of the feature values from a range of 0 to 1. This allows all the features to have similar weights on the gradient descent. It is not always a bad idea to have features weighting differently during the fitting of the model, but due to our team's lack of specific knowledge about diamonds, a less knowledge-driven approach was taken.
+    
+    With the data prepared for our method, in order to test our model, we started by shuffling our dataset and reserving 15\% of it for future testing, using the remaining 85\% for training. This testing set was put aside until the final results so we wouldn't be biased when presenting our final model. Right after, the training dataset was divided again, with 20\% of it being picked for validation and the remaining 80\% used for the fitness of the model.
+    
+    After some analysis of the dataset, it was clear that some samples had inconsistent data. There were, for instance, diamonds with volume equal to zero. In that scenario, we used the difference between the mean and the standard deviation of the volume, depth and table columns to remove some of the outliers.
+    
+\section{Tests and Experiments}
+
+\end{document}
