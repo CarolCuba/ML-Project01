@@ -12,17 +12,17 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Unsupervised learning techniques for text document clustering}
+\title{Linear Regression by Gradient Descent}
 
-\author{\IEEEauthorblockN{Jose Luis Flores Campana}
+\author{\IEEEauthorblockN{Carolina Cuba}
 \IEEEauthorblockA{
-209820 \\
-121451@unsaac.edu.pe}
+???? \\
+????@????}
 \and
-\IEEEauthorblockN{Elvis Rusnel Capia Quispe}
+\IEEEauthorblockN{Leonardo de Melo João}
 \IEEEauthorblockA{
-209813 \\
-e209813@g.unicamp.br}}
+228118 \\
+l228118@g.unicamp.br}}
 
 \maketitle
 
@@ -42,5 +42,47 @@ e209813@g.unicamp.br}}
     After some analysis of the dataset, it was clear that some samples had inconsistent data. There were, for instance, diamonds with volume equal to zero. In that scenario, we used the difference between the mean and the standard deviation of the volume, depth and table columns to remove some of the outliers.
     
 \section{Tests and Experiments}
+
+	All the experiments presented in this section are easily reproduced by running the python notebook file delivered with this report. The code can also be accessed at Carolina Cuba's github (https://github.com/CarolCuba/ML-Project01). It should be noted that the valued found probably won't be the same due to the sampling part of the data preparation being at random.
+	
+	Everytime a new test was executed, the result was compared to the normal distribution linear regression as a way to validate if the implemented gradient descent was converging to the expected error, because that equation always finds the global minima in a convex error distribution. 
+	
+	This equation finds the parameters $\theta$ simply by computing matrices multiplication. To validate the implementation of this equation, we compared it's results on a dummy dataset with Scikit Learn's Linear Model function, which according to the documentation performs the same function.
+	
+	Also, for accuracy and timing performance tests, the implemented methods were compared to scikit learn's Linear Model SGD_Classifier, a commonly used python library for machine learning.
+	
+\subsection{Effects of Data Preparation}
+	
+    The first experiments with the gradient descent were executed before any data scaling. The algorithm used was the final version of the Batch Gradient Descent without regularization. In that scenario, because of the distance between the feature values, the parameters found were too small to be represented in the float variables in python, causing it to overflow printing the error "overflow encountered in reduce". Because of that error, the gradient descent could never find the minima. Although, the normal equation found the minima with a 1286.71 random mean square error (RMSE). With the learning rate of $1x10^{-5}$ and 10000 iterations, the variable didn't overflow although the rmse was as high as 2015.086.
+    
+    With the normalized data, the same algorithm could be executed by more iterations and with a higher valued learning rate and the parameters could actually converge to the desired numbers. In this step, we ran a series of tests changing the values of the learning rate ($\alpha$) and the number of iterations. These tests will be detailed in the next subsection, in Table 1.
+    
+    All the experiments with gradient descent were supported by a chart that shows how the cost (at the y-axis) changes by the number of iterations (at the x-axis). The expected curve is one similar to Figure 1a, which was created by executing the batch gradient descent on the final prepared dataset. 
+    
+    During a later step of the project, when testing the Stochastic Gradient Descent the $cost x iterations$ plot presented an unexpected curve, as shown in Figure 1b. Even though the stochastic gradient descent has a noisier curve compared to the smooth batch generated curve, the steep sudden changes gave us the insight to look for outliers.
+	
+	\begin{figure}[!h]
+      \centering
+      \includegraphics[scale=0.28]{images/smooth-gd-curve.png}
+      \includegraphics[scale=0.28]{images/steep-curves-in-stochastic-gd.png}
+      \caption{Smooth curve and Stochastic unexpect curve due to outliers, respectively}
+      \label{fig1}
+  \end{figure}
+	
+    The outlier removal technique was based on the mean and standard deviation. Each sample's features should have its values falling in between the product of the feature's mean and its standard deviation. The described method was good enough to remove clear outliers (diamonds with a volume value equal to zero, for instance). Although, the stochastic curve presented the same behavior.
+    
+    After close analysis, the behavior was due to the data being ordered in an ascending order which was causing the unexpected behavior. After a simple shuffling of the data frame, the stochastically generated graphic was quite similar to the batch curve, as shown in Figure 2.
+	
+  \begin{figure}[!h]
+      \centering
+      \includegraphics[scale=0.28]{images/smooth-gd-curve.png}
+      \includegraphics[scale=0.28]{images/smoother-curves-in-stochastic-gd.png}
+      \caption{Smooth curve and Stochastic unexpect curve due to outliers, respectively}
+      \label{fig1}
+  \end{figure}
+	
+\section{Time and Accuracy Performance Tests}
+
+	
 
 \end{document}
