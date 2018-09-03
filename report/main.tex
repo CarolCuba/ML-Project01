@@ -12,12 +12,12 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Linear Regression by Gradient Descent}
+\title{Predicting Diamonds Price: A Linear Regression Assigment}
 
-\author{\IEEEauthorblockN{Carolina Cuba}
+\author{\IEEEauthorblockN{Carolina F. Cuba}
 \IEEEauthorblockA{
-???? \\
-????@????}
+226004 \\
+carolinacuba23@gmail.com}
 \and
 \IEEEauthorblockN{Leonardo de Melo João}
 \IEEEauthorblockA{
@@ -26,7 +26,30 @@ l228118@g.unicamp.br}}
 
 \maketitle
 
-\section{Methodology}
+\section{Introduction}
+
+Within the field of Machine Learning there are three main categories in which an algorithm can be classified: Supervised Learning Based, Unsupervised Learning Based and Enhancement Learning Based. Supervised systems are developed over a data base that has been already labeled, therefore, we have a previously knowledge of the expected predictions that our model has to return. Supervised learning is typically done in the context of solving both classification and regression problems.
+While classification problems map an input to a label, regression ones focus on finding a model that better describes the relationship between the input and output continuous value.\par
+
+Simple Linear Regression seeks to perform a predictive analysis over a input data base and its final result is a linear equation(1) that minimize the prediction error, hence the alternative name given to this function: Cost Function.
+
+\begin{equation}
+h_\theta(x)= \theta_0 x_0 + \theta_1 x_1 + \theta_2 x_2 + ... + \theta_n x_n
+\end{equation}
+
+The cost function is used to define the best values for $\theta$ parameters that are multiplied to each respectively feature extracted from the data base. In order to find those values, it was created a method called Gradient Descent that consist on applying partial derivatives on the cost function along a series of iterations pre-defined by the user. After each iteration, the $\theta$ parameters are updated given the new cost value and multiplied by a $\alpha$ scalar (learning rate).
+
+\begin{equation}
+\theta_n := \theta_n - \alpha \frac{1}{m} \sum_{i=1}^{m} (h_\theta(x^(i)) - y(i))x(i)
+\end{equation}
+
+The equation (2) must be repeated by a given number of iterations until the cost reaches a convergence value that coincides with the global minimum of the (1) equation. The importance of the learning rate is that it determines the velocity in which the gradient descent will reach the global minimum. The learning rate has to be set to an appropriate value (neither to low or to high). If it is set to a high value, the gradient descent will not reach the minimum because $\alpha$ will bounces back and forth in the function. If the learning rate is set to a value too low, the gradient descent will eventually reach the minimum, however it will maybe take too much time.\par
+
+The main objective of this assignment is to explore alternatives to linear regression algorithm to solve the problem of predicting the price of diamonds from its attributes using the Diamonds Data Set (54.000 samples). In the "\textit{Activities}" section we explain all the procedures utilized to implement linear regression utilizing both batch and stochastic gradient descent. We also implement a solution for this problem using normalized equations. In the "\textit{Experiments}" section we present all experiments realized, we intended to show relation between cost and number of iterations when changing the method of convergence (gradient descent/normalized equation), the gradient descent itself (batch/stochastic) and the value of learning rate. Finally, on "\textit{Conclusion}" section, we describe all are conclusions after the experimentation.\par
+
+\section{Activities}
+In this section we describe all the procedures implemented in order to solve the problem of pricing diamonds. Besides implementing linear regression using batch gradient descent, we also implemented a normalize equation solution for the same problem in order to compare the results and the processing time. This also was our motivation to implement a solution based on stochastic gradient descent.\par
+Also, in this section we explain all pre-processing techniques used to prepare the data set in order to achieve better results, among then we can mention: Outliers removal and Dummy feature representation.\par
 
 \subsection{Data Preparation}	
     A requirement for any computerized regression technique is that all data needs to be placed in discretized values and, in our case, three columns were presented as classes: cut, color and clarity. Fortunately, the semantic information of the classes was already given in the dataset description. As an example, the feature 'cut' represents the quality of the cut, as said in the previous section, and it's values are classes, varying among 'fair', 'good', 'very good', 'premium', and 'ideal' in its respective order of quality. That information of the quality order was provided by the description of the dataset.
@@ -41,15 +64,26 @@ l228118@g.unicamp.br}}
     
     After some analysis of the dataset, it was clear that some samples had inconsistent data. There were, for instance, diamonds with volume equal to zero. In that scenario, we used the difference between the mean and the standard deviation of the volume, depth and table columns to remove some of the outliers.
     
-\section{Tests and Experiments}
+\subsection{Implementation}
+	As said on previous sessions, this assignment focus on the implementation of three variations of linear regression algorithm to solve the problem of pricing diamonds.\par
+    The first implementation was the batch gradient descent. This variation is know for compute the gradient using the whole data base in each iteration. In this case, the algorithm moves almost directly towards an optimum solution. Batch gradient descend really works good on linear regression, were we have convex functions and the global minimum is ensured.\par
+    Secondly, we have implemented the stochastic version of gradient descend (SGD) which updates the $\theta$ parameters using a single sample each time. SGD works better on functions that have multiple local minima, because each new iteration tends to remove the model from a local minima to a better one. Besides, another advantage of SGD is that this variation is relatively faster than the batch gradient descent in large data sets.\par
+    Finally, we also implemented a normally equation alternative solution this problem. This algorithm does not perform a gradient descend on a function since it directly finds the right values to the $\theta$ parameters using an equation (3) based on linear algebra theory, therefore there is not need of finding the right value of $\alpha$ and there is not need to use a series of iterations.\par
 
-	All the experiments presented in this section are easily reproduced by running the python notebook file delivered with this report. The code can also be accessed at Carolina Cuba's github (https://github.com/CarolCuba/ML-Project01). It should be noted that the valued found probably won't be the same due to the sampling part of the data preparation being at random.
+\begin{equation}
+\theta = (X^T X)^{-1} X^T y
+\end{equation}
+
+This approach, however, only works for linear regression problems, where the model is represented by a convex function. Moreover, this approach can be used for too large data sets because it consumes a lot of RAM memory and its complexity is of O\((n^3)\) .\par
+
+\section{Tests and Experiments}
+ 	All the experiments presented in this section are easily reproduced by running the python notebook file delivered with this report. The code can also be accessed at Carolina Cuba's github (https://github.com/CarolCuba/ML-Project01). It should be noted that the valued found probably won't be the same due to the sampling part of the data preparation being at random.
 	
 	Everytime a new test was executed, the result was compared to the normal distribution linear regression as a way to validate if the implemented gradient descent was converging to the expected error, because that equation always finds the global minima in a convex error distribution. 
 	
 	This equation finds the parameters $\theta$ simply by computing matrices multiplication. To validate the implementation of this equation, we compared it's results on a dummy dataset with Scikit Learn's Linear Model function, which according to the documentation performs the same function.
 	
-	Also, for accuracy and timing performance tests, the implemented methods were compared to scikit learn's Linear Model SGD_Classifier, a commonly used python library for machine learning.
+	Also, for accuracy and timing performance tests, the implemented methods were compared to scikit learn's Linear Model SGD\_Classifier, a commonly used python library for machine learning.
 	
 \subsection{Effects of Data Preparation}
 	
@@ -82,7 +116,15 @@ l228118@g.unicamp.br}}
   \end{figure}
 	
 \section{Time and Accuracy Performance Tests}
-
 	
+	
+
+\section{Conclusion}
+
+\begin{thebibliography}{00}
+
+
+\end{thebibliography}
+
 
 \end{document}
