@@ -28,16 +28,16 @@ l228118@g.unicamp.br}}
 
 \section{Introduction}
 
-Within the field of Machine Learning there are three main categories in which an algorithm can be classified: Supervised Learning Based, Unsupervised Learning Based and Enhancement Learning Based. Supervised systems are developed over a data base that has been already labeled, therefore, we have a previously knowledge of the expected predictions that our model has to return. Supervised learning is typically done in the context of solving both classification and regression problems.
-While classification problems map an input to a label, regression ones focus on finding a model that better describes the relationship between the input and output continuous value.\par
+	Within the field of Machine Learning there are three main categories in which an algorithm can be classified: Supervised Learning Based, Unsupervised Learning Based and Enhancement Learning Based. Supervised systems are developed over a data base that has been already labeled, therefore, we have a previously knowledge of the expected predictions that our model has to return. Supervised learning is typically done in the context of solving both classification and regression problems.
+While classification maps an input to a label, regression focus on finding a model that better describes the relationship between the input and output continuous value.\par
 
-Simple Linear Regression seeks to perform a predictive analysis over a input data base and its final result is a linear equation(1) that minimize the prediction error, hence the alternative name given to this function: Cost Function.
+	Simple Linear Regression seeks to perform a predictive analysis over an input dataset. Its final result is a set of $\theta$ parameters that are used in linear equation(1) that tries to minimize the prediction error, hence the alternative name given to this function: Cost Function.
 
 \begin{equation}
 h_\theta(x)= \theta_0 x_0 + \theta_1 x_1 + \theta_2 x_2 + ... + \theta_n x_n
 \end{equation}
 
-The cost function is used to define the best values for $\theta$ parameters that are multiplied to each respectively feature extracted from the data base. In order to find those values, it was created a method called Gradient Descent that consist on applying partial derivatives on the cost function along a series of iterations pre-defined by the user. After each iteration, the $\theta$ parameters are updated given the new cost value and multiplied by a $\alpha$ scalar (learning rate).
+The cost function is used to define the best values for $\theta$ parameters that are multiplied to each respectively feature contained in the dataset. In order to find those values, a possibility is to use a method called Gradient Descent. That method consist of applying partial derivatives on the cost function along a series of iterations pre-defined by the user. After each iteration, the $\theta$ parameters are updated given the new cost value and multiplied by a $\alpha$ scalar (learning rate).
 
 \begin{equation}
 \theta_n := \theta_n - \alpha \frac{1}{m} \sum_{i=1}^{m} (h_\theta(x^(i)) - y(i))x(i)
@@ -56,7 +56,7 @@ Also, in this section we explain all pre-processing techniques used to prepare t
     
     Thanks to that knowledge, it was decided to use a dummy coding for discretizing the values. That means that we keep the number of features by giving each class a different value. These values respect the semantic increase of quality of the class, i.e. 'fair' = 1, 'good' = 2, 'very good' = 3.
     
-    Also, five features are used to represent two pieces of information: x, y, z, width and table. The size of the diamond is represented by x, y, and z while the width and table represent the correlation among of these dimensions in percentage. Therefore, we combined x,y,z into a new feature called volume with the correlation among them still being expressed on the width and table features.
+    Also, five features are used to represent two pieces of information: x, y, z, depth and table. The size of the diamond is represented by x, y, and z while the depth and table represent the correlation among of these dimensions in percentage. Therefore, we combined x,y,z into a new feature called volume with the correlation among them still being expressed on the depth and table features.
     
     The last pre-processing step in preparation was the normalization of the feature values from a range of 0 to 1. This allows all the features to have similar weights on the gradient descent. It is not always a bad idea to have features weighting differently during the fitting of the model, but due to our team's lack of specific knowledge about diamonds, a less knowledge-driven approach was taken.
     
@@ -95,13 +95,13 @@ This approach, however, only works for linear regression problems, where the mod
     
     During a later step of the project, when testing the Stochastic Gradient Descent the $cost x iterations$ plot presented an unexpected curve, as shown in Figure 1b. Even though the stochastic gradient descent has a noisier curve compared to the smooth batch generated curve, the steep sudden changes gave us the insight to look for outliers.
 	
-	\begin{figure}[!h]
+	\begin{figure*}[!h]
       \centering
-      \includegraphics[scale=0.28]{images/smooth-gd-curve.png}
-      \includegraphics[scale=0.28]{images/steep-curves-in-stochastic-gd.png}
-      \caption{Smooth curve and Stochastic unexpect curve due to outliers, respectively}
+      \includegraphics[width=0.48\textwidth]{images/smooth-gd-curve.png}
+      \includegraphics[width=0.48\textwidth]{images/steep-curves-in-stochastic-gd.png}
+      \caption{Smooth curve and Stochastic unexpect curve due to unshuffling and outliers, respectively}
       \label{fig1}
-  \end{figure}
+  \end{figure*}
 	
     The outlier removal technique was based on the mean and standard deviation. Each sample's features should have its values falling in between the product of the feature's mean and its standard deviation. The described method was good enough to remove clear outliers (diamonds with a volume value equal to zero, for instance). Although, the stochastic curve presented the same behavior.
     
@@ -109,22 +109,78 @@ This approach, however, only works for linear regression problems, where the mod
 	
   \begin{figure}[!h]
       \centering
-      \includegraphics[scale=0.28]{images/smooth-gd-curve.png}
-      \includegraphics[scale=0.28]{images/smoother-curves-in-stochastic-gd.png}
-      \caption{Smooth curve and Stochastic unexpect curve due to outliers, respectively}
-      \label{fig1}
+      \includegraphics[width=1\columnwidth]{images/smoother-curves-in-stochastic-gd.png}
+      \caption{Smooth stochastic gradient descent curve}
+      \label{fig2}
   \end{figure}
 	
 \section{Time and Accuracy Performance Tests}
+
+	The time and accuracy performance tests were held in the validation slice of the dataset while comparing different learning rates in both methods (batch and stochastic GD). Afterwards, the better fitted model was used in the actual test set to check the final (and more realistic) accuracy.
 	
+	Table 1 shows the number of iterations and time it took for both algorithms to reach a desired error variation between iterations of $\epsilon$  = $1x10^{-5}$ or a max number of iterations equal to 5 times the number of samples in the training dataset.
+	
+	  \begin{table}[h!]
+    \begin{center}
+      \caption{Performance tests for different learning rates}
+      \label{table:table1}
+      \begin{tabular}{l|c|c|c|c}
+        Method & Learning Rate & Iterations & Time(s) & RMSE\\
+        \hline
+        Batch & 0.001 & 51523 & 289.135 & 2502.948 \\
+        Stochastic & 0,001 & 183190 & 586,639 & 2494.971 \\
+        Batch & 0.005 & 40892 & 223.085 & 1690.667 \\
+        Stochastic & 0.005 & 183190 & 578.814 & 1678.273 \\
+        Batch & 0.01 & 31954 & 181.066 & 1482.209 \\
+        Stochastic & 0.01 & 183190 & 620.516 & 1470.200 \\
+        Batch & 0.05 & 26753 & 155.024 & 1280.599 \\
+        Stochastic & 0.05 & 183190 & 642.264 & 1502,134 \\
+        Batch & 0.1 & 24872 & 143.273 & 1265.195 \\
+        Stochastic & 0.1 & 183190 & 651.987 & 1912,245 \\
+        Batch & 0.5 & 22077 & 124.462 & 1260.281 \\
+        Stochastic & 0.5 & 183190 & 669.826 & 2566.960 \\
+    \end{tabular}
+  \end{center}
+\end{table}	
+	
+	Analysing the table, the Batch Gradient Descent(BGD) performed better in this dataset, with  both the number of iterations and Random Mean Square Error (RMSE) decreasing on the increase of the learning rate.
+	
+	On the other hand, the Stochastic Gradient Descent (SGD) performed well in accuracy until a learning rate of 0.001 but couldn't converge to a minima with values greater than this. In order to check this behavior a chart was plotted to show how the cost was changing over time. The result (Figure 3) chart shows that the learning rate was causing the SGD to miss the local minima constantly, never converging to the desired value.
+	
+	  \begin{figure}[!h]
+      \centering
+      \includegraphics[width=1\columnwidth]{images/sgd_high_learning_rate.png}
+      \caption{High learning rate SGD missing the minima}
+      \label{fig3}
+  \end{figure}
+	
+	Still analysing the table, the fixed number of iterations in the SGD is due to a lack of convergence to the desired error variation described in a few paragraphs above. Because the parameters ($\theta_i$) are updated after each sample, the error between the updates is higher, causing the unwanted waiting time.
+	
+	Based on these results, the best model in both time nad RMSE was the BGD with a learning rate of 0.5 and it was the one selected for running on the test set.
+
+	In order to validate the test results, an execution of the Normal Equation Regression algorithm developed and the Scikit SGD was also used to calculte the error. The  implemented BGD got an RMSE of 1210.178 and it took 120.651 seconds to run while the normal equation got a 1892.386 RMSE and took 0.005 seconds to run. In it's turn, the Scikit Learn SGD got an RMSE of XXXXX and it took XXX seconds to run, using the same cost function, epsulon, learning rate and maximum number of iterations. These results are easily visualized on Table 2.
+	
+	These values
+	
+	The difference between the Normal Equation values compared to the others was unexpected, since this algorithm should find the optimum minima. Although, when tested on the training set, it performed better than all other algorithms. This means that the normal equation was overfitting the training set, even though the model is a simple line.
+	
+  \begin{table}[h!]
+    \begin{center}
+      \caption{Performance tests for different models}
+      \label{table:table2}
+      \begin{tabular}[10pt]{c|c|c|c}
+        Method & Learning Rate & Time(s) & RMSE\\
+        \hline
+        Implemented BGD & 0.5 & 120.651 & 1210.948 \\
+        Sckiti SGD& 0.5 & - & - \\
+        Normal Equation & - & 0.005 & 1193.825 \\
+    \end{tabular}
+  \end{center}
+\end{table}
 	
 
 \section{Conclusion}
 
-\begin{thebibliography}{00}
-
-
-\end{thebibliography}
 
 
 \end{document}
