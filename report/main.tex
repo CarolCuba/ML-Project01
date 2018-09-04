@@ -158,9 +158,9 @@ This approach, however, only works for linear regression problems, where the mod
 	
 	Based on these results, the best model in both time nad RMSE was the BGD with a learning rate of 0.5 and it was the one selected for running on the test set.
 
-	In order to validate the test results, an execution of the Normal Equation Regression algorithm developed and the Scikit SGD was also used to calculte the error. The  implemented BGD got an RMSE of 1210.178 and it took 120.651 seconds to run while the normal equation got a 1892.386 RMSE and took 0.005 seconds to run. In it's turn, the Scikit Learn SGD got an RMSE of XXXXX and it took XXX seconds to run, using the same cost function, epsulon, learning rate and maximum number of iterations. These results are easily visualized on Table 2.
+	In order to compare the test results, an execution of the Normal Equation Regression algorithm developed in this work and the Scikit SGD were also used to calculte the error. The  implemented BGD got an RMSE of 1210.178 and it took 120.651 seconds to run while the normal equation got a 1892.386 RMSE and took 0.005 seconds to run. In it's turn, the Scikit Learn SGD got an RMSE of 4723.090 and it took 49 seconds to run, using the same cost function, epsulon, learning rate and maximum number of iterations. These results are easily visualized on Table 2.
 	
-	These values
+	The reason why the scikit method converged so poorly is because of the relation between learning rate and max number of iteraions (as seen in Table one's comparison between BGD and SGD). In order for it to converge, the learning rate should be quite smaller and the max number of iterations should be higher.
 	
 	The difference between the Normal Equation values compared to the others was unexpected, since this algorithm should find the optimum minima. Although, when tested on the training set, it performed better than all other algorithms. This means that the normal equation was overfitting the training set, even though the model is a simple line.
 	
@@ -172,7 +172,7 @@ This approach, however, only works for linear regression problems, where the mod
         Method & Learning Rate & Time(s) & RMSE\\
         \hline
         Implemented BGD & 0.5 & 120.651 & 1210.948 \\
-        Sckiti SGD& 0.5 & - & - \\
+        Sckiti SGD& 0.5 & -69.49554800987244 & 4723.090 \\
         Normal Equation & - & 0.005 & 1193.825 \\
     \end{tabular}
   \end{center}
