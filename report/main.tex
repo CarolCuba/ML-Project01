@@ -120,27 +120,31 @@ This approach, however, only works for linear regression problems, where the mod
 	
 	Table 1 shows the number of iterations and time it took for both algorithms to reach a desired error variation between iterations of $\epsilon$  = $1x10^{-5}$ or a max number of iterations equal to 5 times the number of samples in the training dataset.
 	
-	  \begin{table}[h!]
-    \begin{center}
-      \caption{Performance tests for different learning rates}
-      \label{table:table1}
-      \begin{tabular}{l|c|c|c|c}
-        Method & Learning Rate & Iterations & Time(s) & RMSE\\
-        \hline
-        Batch & 0.001 & 51523 & 289.135 & 2502.948 \\
-        Stochastic & 0,001 & 183190 & 586,639 & 2494.971 \\
-        Batch & 0.005 & 40892 & 223.085 & 1690.667 \\
-        Stochastic & 0.005 & 183190 & 578.814 & 1678.273 \\
-        Batch & 0.01 & 31954 & 181.066 & 1482.209 \\
-        Stochastic & 0.01 & 183190 & 620.516 & 1470.200 \\
-        Batch & 0.05 & 26753 & 155.024 & 1280.599 \\
-        Stochastic & 0.05 & 183190 & 642.264 & 1502,134 \\
-        Batch & 0.1 & 24872 & 143.273 & 1265.195 \\
-        Stochastic & 0.1 & 183190 & 651.987 & 1912,245 \\
-        Batch & 0.5 & 22077 & 124.462 & 1260.281 \\
-        Stochastic & 0.5 & 183190 & 669.826 & 2566.960 \\
-    \end{tabular}
-  \end{center}
+\begin{table}[h!]
+ \begin{center}
+  \caption{Performance tests for different learning rates}
+  \label{table:table1}
+  \begin{tabular}{ |c|c|c|c|c| }
+   \hline
+    Method & Learning Rate & Iterations & Time(s) & RMSE\\
+   \hline
+   \multirow{5}{BGD} & 0.001 & 51523 & 289.135 & 2502.948 \\ 
+                     & 0.005 & 40892 & 223.085 & 1690.667 \\
+                     & 0.01 & 31954 & 181.066 & 1482.209 \\
+                     & 0.05 & 26753 & 155.024 & 1280.599 \\
+                     & 0.1 & 24872 & 143.273 & 1265.195 \\
+                     & 0.5 & 22077 & 124.462 & 1260.281 \\
+   \hline
+   \multirow{5}{SGD} & 0.001 & 183190 & 586.639 & 2494.971 \\
+                     & 0.005 & 183190 & 578.814 & 1678.273 \\
+                     & 0.01 & 183190 & 620.516 & 1470.200 \\
+                     & 0.05 & 26753 & 155.024 & 1280.599 \\
+                     & 0.1 & 183190 & 651.987 & 1912.245 \\
+                     & 0.5 & 183190 & 669.826 & 2566.960 \\
+
+ \hline
+ \end{tabular}
+ \end{center}
 \end{table}	
 	
 	Analysing the table, the Batch Gradient Descent(BGD) performed better in this dataset, with  both the number of iterations and Random Mean Square Error (RMSE) decreasing on the increase of the learning rate.
@@ -180,6 +184,17 @@ This approach, however, only works for linear regression problems, where the mod
 	
 
 \section{Conclusion}
+
+    
+    All things considered, we were able to reach some conclusions thanks to our studies and experimentations. First of all, preparing the data set turn out to be one of the most important steps when dealing to regression problemns. The experiments have shown that a not normalized data reflects negatively on the final results. In our case, not normalizing the data set caused either a too high error value or an overflow error. Those things did not happen after normalization. Removing outliers also proved to be a good strategy, since it decreased the error value. \par
+    
+   We were also able to concluded that, on a validation set, batch gradient descent usually present higher values for RMSE error when comparing to the results of SGD. However, batch gradient descent turn out to be much more efficient since, not only the processing time but the number of iterations, were considerably inferior those found when executing SGD.\par
+   
+    Changing $\alpha$ value also reflected in both time and accuracy. On batch gradient descent, higher values of learning rate resulted on less iterations needed to complete the task, something that was already expected.Also, we could observe that increasing $\alpha$ influence positively the final RMSE.\par
+    
+    On the other hand, due to the fact that SGD takes to long to converge, for most of $\alpha$ values the algorithm had to be forced to stoped by the limit of interations number. The RMSE did not follow a pattern, but we suposed that a value to high for learning rate disturbed RMSE since starting from  $\alpha$ = 0.1 the final error was increased. \par
+    
+    Finally, we compare our BGD model to the that based on normal equations. The normal equation one resulted on a better RSME, which was expected since this approach always finds the global minima, and it completed the task in less time than the BGD model. This could be explained due to the implementation been made with the Numpy library, that is already optimized for operations with arrays.
 
 
 
